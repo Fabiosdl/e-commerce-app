@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api, { getCsrfTokenFromCookies } from "../api";
+import api from "../api";
 
 const CustomerDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -9,22 +9,18 @@ const CustomerDashboard = () => {
   const [pageSize] = useState(25); // Default page size
   const [totalPages, setTotalPages] = useState(0);
   const [basketItemsCount, setBasketItemsCount] = useState(0);
-  const [basketId, setBasketId] = useState(null); // Basket ID state
+  const [basketId, setBasketId] = useState(0);
+  const [basketUpdated, setBasketUpdated] = useState(false); // 👈 Trigger state
 
   const userId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
-    // Log the CSRF token (from cookies)
-    console.log("CSRF Token:", getCsrfTokenFromCookies());
+    const getBasketid = Number(localStorage.getItem('basketId'));
+    if(getBasketid)
+      setBasketId(getBasketid);
+  },[]);
 
-    // Fetch basketId from localStorage
-    const storedBasketId = localStorage.getItem("basketId");
-    if (storedBasketId) {
-      setBasketId(storedBasketId); // Set basketId from localStorage
-    } else {
-      console.error("Basket ID not found in localStorage.");
-      setError("Basket not found");
-    }
+  useEffect(() => {
 
     const fetchProducts = async () => {
       try {
@@ -53,23 +49,23 @@ const CustomerDashboard = () => {
         console.error("Error fetching basket count:", err);
       }
     };
-
     fetchBasketItemCount();
-  }, [basketId]); // Run this effect only when basketId changes
+  },[basketUpdated]); //👈 Re-fetch when `basketUpdated` changes
 
-  const addProductToBasket = async (productId) => {
+  const addItemToBasket = async (productId) => {
     if (!basketId) {
-      alert("Basket not initialized yet.");
+      console.log("Basket not initialized yet.");
       return;
     }
 
     try {
-      await api.post(`/basket/${basketId}/item?productId=${productId}&quant=1`);
-      setBasketItemsCount((prevCount) => prevCount + 1);
-      alert("Product added to basket!");
+      //add item to basket
+      await api.post(`/basket/${basketId}/item/add-item?productId=${productId}&quant=1`);
+    
+      // Toggle `basketUpdated` state to trigger `useEffect`
+      setBasketUpdated(prev => !prev); // 👈 This forces `useEffect` to run
     } catch (err) {
       console.error("Error adding product:", err);
-      alert("Error adding product to basket.");
     }
   };
 
@@ -80,7 +76,7 @@ const CustomerDashboard = () => {
 
   return (
     <div>
-      <h1>Welcome, Customer!</h1>
+      <h2>Welcome, Customer!</h2>
 
       <div>
         <h3>Basket</h3>
@@ -97,7 +93,7 @@ const CustomerDashboard = () => {
               <span>
                 {product.productName} ${product.productPrice}
               </span>
-              <button onClick={() => addProductToBasket(product.id)}>Add to Basket</button>
+              <button onClick={() => addItemToBasket(product.id)}>Add to Basket</button>
             </li>
           ))}
         </ul>

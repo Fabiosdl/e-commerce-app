@@ -2,28 +2,23 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
-  withCredentials: true, // Send cookies with requests
+  headers:{
+    'Content-Type':'application/json',
+  },
 });
 
-// Function to get CSRF token from cookies
-export const getCsrfTokenFromCookies = () => {
-  const csrfCookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("XSRF-TOKEN="));
+// use interceptor to inject the asic Authentication credentials in each request
 
-  return csrfCookie ? csrfCookie.split("=")[1] : null;
-};
-
-// Add CSRF token to all requests
 api.interceptors.request.use((config) => {
-  const csrfToken = getCsrfTokenFromCookies();
-  if (csrfToken) {
-    config.headers["X-XSRF-TOKEN"] = csrfToken;
-    console.log('Fetched CSRF token: ', csrfToken);
-  } else {
-    console.warn("⚠️ No CSRF Token found in cookies!");
+
+  const credentials = localStorage.getItem('credentials');
+
+  if (credentials) {
+    config.headers['Authorization'] = `Basic ${credentials}`;
   }
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 export default api;
