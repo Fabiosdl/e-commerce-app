@@ -3,6 +3,9 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:8080",
   withCredentials: true, // Send cookies with requests
+  headers:{
+    'Content-Type':'application/json',
+  },
 });
 
 // Function to get CSRF token from cookies
@@ -28,7 +31,7 @@ api.interceptors.request.use((config) => {
   //storing credentials in the header
   const credentials = localStorage.getItem('credentials');
   if(credentials) {
-    config.headers["Authentication"] = "Base " + credentials;
+    config.headers["Authorization"] = `Basic ${credentials}`;
     console.log('The credentials are being sent to server');
   } else {
     console.warn("⚠️ No credentials are being sent");
