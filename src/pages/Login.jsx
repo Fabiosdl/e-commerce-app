@@ -4,7 +4,7 @@ import api from '../api';
 import { useNavigate } from 'react-router-dom'; // For redirection after successful login
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
@@ -12,10 +12,11 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Prepare URL-encoded form data
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    formData.append('password', password);
+    // Prepare credentials body
+    const credentials = {
+      username: username,
+      password: password
+    }
 
     try {
 
@@ -23,7 +24,7 @@ const LoginPage = () => {
       
       const response = await api.post(
         '/api/auth/login',
-        formData.toString(),
+        JSON.stringify(credentials),
         {
           headers: {
             'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ const LoginPage = () => {
 
       // Redirect based on role
       if (role === 'ROLE_CUSTOMER') {
-        navigate('/customer-dashboard');
+        navigate('/hello');
       } else {
         navigate('/admin-dashboard');
       }
@@ -66,9 +67,9 @@ const LoginPage = () => {
           <label htmlFor="email">Email:</label>
           <input
             type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
