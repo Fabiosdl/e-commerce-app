@@ -12,25 +12,18 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Prepare credentials body
-    const credentials = {
-      username: username,
-      password: password
-    }
+    // format for basic authorization
+    const credentials = `${username}:${password}`;
+
+    //encode the credentials to Base64
+    const encodedCredentials = btoa(credentials);
+    localStorage.setItem('credentials', encodedCredentials);
 
     try {
 
       // Make the POST request using Axios
       
-      const response = await api.post(
-        '/api/auth/login',
-        JSON.stringify(credentials),
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await api.post('/api/auth/login');
 
       // Access parsed JSON data from response.data
       const { role, userId, basketId } = response.data;      
