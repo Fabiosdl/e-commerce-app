@@ -12,32 +12,33 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // format for basic authorization
-    const credentials = `${username}:${password}`;
-
-    //encode the credentials to Base64
-    const encodedCredentials = btoa(credentials);
-    localStorage.setItem('credentials', encodedCredentials);
+    const credentials = {
+      username : username,
+      password : password
+    };
 
     try {
 
       // Make the POST request using Axios
       
-      const response = await api.post('/api/auth/login');
+      const response = await api.post('/api/auth/login',credentials);
 
       // Access parsed JSON data from response.data
-      const { role, userId, basketId } = response.data;      
+      const { token, userId, basketId, role} = response.data;      
 
-      // Store user details 
+      // Store jwt token and user details 
+      localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
       localStorage.setItem('basketId', basketId);
-      console.log('User ID: ', userId);
-      console.log('Basket Id: ', basketId);
-      console.log('Role: ', role);
+      localStorage.setItem('role', role);
+
+      console.log(`Token sent by the server: ${token}`);
+      console.log(`User Id sent by the server: ${userId}`);
+      console.log(`User Role sent by the server: ${role}`);
 
       // Redirect based on role
       if (role === 'ROLE_CUSTOMER') {
-        navigate('/hello');
+        navigate('/customer-dashboard');
       } else {
         navigate('/admin-dashboard');
       }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import api, { getCsrfTokenFromCookies } from "../api";
+import api from "../api";
 
 const CustomerDashboard = () => {
+  const [customer, setCustomer] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,8 +15,21 @@ const CustomerDashboard = () => {
   const userId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
-    // Log the CSRF token (from cookies)
-    console.log("CSRF Token:", getCsrfTokenFromCookies());
+
+    const fetchUser = async () => {
+      try {
+        
+        const response = await api.get(`/user/${userId}`);
+        setCustomer(response.data.name);
+
+      } catch (err) {
+        console.error("Error fetching customer name:", err);
+      }
+    };
+    fetchUser();
+  }, [userId]);
+
+  useEffect(() => {
 
     // Fetch basketId from localStorage
     const storedBasketId = localStorage.getItem("basketId");
@@ -80,7 +94,7 @@ const CustomerDashboard = () => {
 
   return (
     <div>
-      <h1>Welcome, Customer!</h1>
+      <h1>Welcome, {customer}!</h1>
 
       <div>
         <h3>Basket</h3>
