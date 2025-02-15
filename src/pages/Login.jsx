@@ -20,16 +20,30 @@ const LoginPage = () => {
     try {
 
       // Make the POST request using Axios
+
+      //Checking if the token is expired. If so, delete it in localStorage
+      //Immediately logs out the user if they open the app and the token is already expired.
+      // get token expiration
+      const expiration = localStorage.getItem('tokenExpiration');
       
+      if (expiration && Date.now() > parseInt(expiration)) {
+        console.warn("Token expired. Logging out...");
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpiration');
+      }
+
       const response = await api.post('/api/auth/login',credentials);
 
       // Access parsed JSON data from response.data
-      const { token, userId, basketId, role} = response.data;      
+      const { token, expiresIn, userId, role, } = response.data;  
+      
+      //Set when the token will be expired
+      const tokenExpiration = Date.now() + expiresIn;
 
       // Store jwt token and user details 
       localStorage.setItem('token', token);
+      localStorage.setItem('tokenExpiration', tokenExpiration);
       localStorage.setItem('userId', userId);
-      localStorage.setItem('basketId', basketId);
       localStorage.setItem('role', role);
 
       console.log(`Token sent by the server: ${token}`);

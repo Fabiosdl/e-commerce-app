@@ -13,6 +13,7 @@ api.interceptors.request.use((config) => {
 
   //storing token in the header
   const token = localStorage.getItem('token');
+
   if(token) {
     config.headers["Authorization"] = `Bearer ${token}`;
     console.log('The credentials are being sent to server');
