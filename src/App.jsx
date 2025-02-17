@@ -6,6 +6,9 @@ import CustomerDashboard from './pages/CustomerDashboard';
 import SignUp from './pages/signup/Register';
 import SuccessfulSignUp from './pages/signup/successfulSignUp';
 import Order from './pages/Order';
+import Capture from './pages/paypal/Capture';
+import ConfirmPayment from './pages/paypal/ConfirmPayment';
+import SuccessfulPayment from './pages/paypal/SuccessfulPayment';
 
 const App = () => {
 
@@ -39,6 +42,9 @@ const App = () => {
         <Route path="/order" element={<Order />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/successful-signup" element={<SuccessfulSignUp />} />
+        <Route path="/capture" element={<Capture />} />
+        <Route path="/confirm-payment" element={<ConfirmPayment />} />        
+        <Route path="/successful-payment" element={<SuccessfulPayment />} />
       </Routes>
     </>
   );

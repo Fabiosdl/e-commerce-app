@@ -1,34 +1,28 @@
-import React, { useState, useEffect } from "react";
-import api from "../api";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../api";
 
-const Order = () => {
+const ConfirmPayment = () => {
+    const userId = Number(localStorage.getItem('userId'));
+    const entityOrderId = Number(localStorage.getItem('entityOrderId'));
+    const token = localStorage.getItem('paypalToken');
 
-    const [entityOrderId, setEntityOrderId] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-
-    const userId = Number(localStorage.getItem('userId'));
+    const navigate = useNavigate();
 
     useEffect(() => {
-
         const fetchOrder = async () => {
+            if (!token || !entityOrderId) return;  // Skip fetching if missing critical params.
 
             try {
                 const response = await api.get(`/user/${userId}/order/pending-order`);
                 if (response.data && response.data.items) {
-                    const { id, items, totalPrice } = response.data;
-    
-                    console.table(items);                // Displays items in tabular form
-    
-                    setEntityOrderId(id);
+                    const { items, totalPrice } = response.data;
                     setOrderItems(items);
                     setTotalPrice(totalPrice);
-
-                    localStorage.setItem('entityOrderId', entityOrderId);
-
                 } else {
                     console.warn("No items found in order response");
                 }
@@ -41,37 +35,27 @@ const Order = () => {
         };
 
         fetchOrder();
+    }, []); // Run only once when the component mounts
 
-    },[entityOrderId]);   
-
-    const handlePayment = async () => {
+    const handleConfirmPayment = async () => {
         try {
-
             const orderIdParam = Number(entityOrderId);
-            const response = await api.post(`/user/${userId}/order/${orderIdParam}/payments/create`);
-            
+            console.log(`paypal token: ${token}`);
+            const response = await api.post(`/user/${userId}/order/${orderIdParam}/payments/capture?token=${token}`);
+
             if (!response || !response.data) {
                 console.error("Payment response is empty");
                 return;
             }
 
-            const approvalUrl = response.data;
-
-            console.log("Approval URL:", approvalUrl);
-            if (approvalUrl && approvalUrl.startsWith("https")) {
-                window.location.href = approvalUrl;
-            } else {
-                console.error("Invalid PayPal approval URL:", approvalUrl);
-            }
-
+            navigate("/successful-payment"); // Redirect to successful payment page
         } catch (err) {
             console.error("Payment failed:", err);
             setError("Payment failed");
         }
     };
-    
-    if (loading) return <div className="spinner">Loading...</div>;
 
+    if (loading) return <div className="spinner">Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -106,8 +90,7 @@ const Order = () => {
 
             <h3 style={{ textAlign: "right", marginTop: "15px" }}>Total: ${totalPrice.toFixed(2)}</h3>
 
-            <button onClick={handlePayment}>Pay Now</button>
-
+            <button onClick={handleConfirmPayment}>Confirm Payment</button>
         </div>
     );
 };
@@ -115,7 +98,7 @@ const Order = () => {
 const styles = {
     th: { textAlign: "left", padding: "8px", borderBottom: "1px solid #ddd" },
     td: { padding: "8px", borderBottom: "1px solid #ddd" },
-    tr: { borderBottom: "1px solid #ddd" }
+    tr: { borderBottom: "1px solid #ddd" },
 };
 
-export default Order;
+export default ConfirmPayment;

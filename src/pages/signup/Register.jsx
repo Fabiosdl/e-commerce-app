@@ -5,23 +5,28 @@ const SignUpPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [address, setAddress] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (password !== confirmPassword) {
+            setErrorMessage("Passwords do not match");
+            return;
+        }
+
         const userInputs = {
             name: name,
             email: email,
-            password: password,
-            address: address
+            password: password
         };
 
         try {
 
-            const response = await fetch('http://localhost:8080/api/auth/register', {
+            const response = await fetch('http://localhost:8080/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,14 +84,14 @@ const SignUpPage = () => {
                 required
             />
         </div>
-        
         <div className="form-group">
-            <label htmlFor="address">Address:</label>
+            <label htmlFor="confirmPassword">Confirm Password:</label>
             <input
-                type="text"
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
             />
         </div>
 
