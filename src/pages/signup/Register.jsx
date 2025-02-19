@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // for redirection after successful registration
+import './Register.css';
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
@@ -48,7 +49,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <div className="login-container">
+        <div className="signup-container">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
 

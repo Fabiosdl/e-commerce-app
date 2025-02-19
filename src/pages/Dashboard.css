@@ -1,0 +1,193 @@
+@font-face {
+  font-family: 'VariableFont';
+  src: url('/public/fonts/RedHatText-VariableFont_wght.ttf') format('truetype');
+}
+
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: VariableFont;
+  font-size: 16px;
+  background-color: hsl(30, 50%, 95%);
+  color: hsl(220, 15%, 20%);
+}  
+  
+.page-container{
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;   
+  overflow-y:auto;
+}
+
+.dashboard-header{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: hsl(25, 80%, 55%);
+}
+
+.dashboard-header h2{
+  margin-left: 30px;
+  color: white;
+}
+.basket-info{
+  margin-right: 50px;
+}
+
+.imgBasket{
+  scale: 1.8;
+  margin-right: 30px;
+}
+
+.itemsCount{
+  color: hsl(14, 86%, 42%);
+  font-size: 25px;
+  font-weight: 900;
+
+}
+
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+  gap: 25px;
+  max-width: 100%;
+  padding: 0 20px 0 20px;
+
+}
+
+.product img{
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  align-self: center;
+}
+
+.category{
+  font-size: 2rem;    
+  font-weight: 700;
+  grid-column: span 4;
+  grid-row: span 1;
+  margin-bottom: -10px;
+}
+
+.product{
+  grid-row: span 1;
+  grid-column: span 1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items:center;    
+  background-color: hsl(40, 60%, 92%);
+  padding: 20px;
+}
+
+.resume{
+  text-align: center;
+  line-height: 1;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.description{
+  color: hsl(30, 1%, 62%);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;  
+  margin-top: 10px;
+}
+
+.price{
+  color: hsl(14, 86%, 42%);
+  font-size: 15px;
+  font-weight: 700;  
+  margin-top: 10px;
+}
+
+.btn{
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;    
+  align-self: center;
+  width: 70%;
+  height: 38px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: hsl(25, 85%, 50%);
+  border-color: hsl(14, 90%, 38%);
+  border-width: 0.1px;
+  border-radius: 60px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.btn::before {
+  content: '';
+  width: 20px; /* Icon width */
+  height: 20px; /* Icon height */
+  background: url('/images/icon-add-to-cart.svg') no-repeat center;
+}
+
+.btn.no-cart::before {
+  content: none; /* Removes the cart image once the button is clicked*/
+}
+
+.btn:hover{
+  color: hsl(14, 90%, 38%);
+  border-color: hsl(14, 90%, 38%);
+  border-width: 1.5px;
+}
+
+.btn.no-cart{
+  color: hsl(20, 50%, 98%);
+  justify-content: space-between;
+}
+
+.btn.no-cart:hover{
+  cursor: auto;
+}
+ 
+ .btn.no-cart:hover{
+     cursor: auto;
+ }
+
+ .quantity{
+  font-size: 15px;
+ }
+
+ .decrement,.increment{
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     border-radius: 50%;
+     border-width: 1px;
+     border-color: hsl(20, 50%, 98%);
+     background-color: transparent;     
+    scale: 0.3;
+ }
+
+ .decrement:hover,
+ .increment:hover{
+     cursor: pointer;
+     background-color: transparent;
+ }
+
+.footer-container{
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: hsl(25, 85%, 30%);
+  margin-top: 30px;
+}

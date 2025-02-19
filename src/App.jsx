@@ -1,10 +1,10 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import React, {useEffect} from 'react';
-import Login from './pages/Login';
-import Hello from './pages/Hello';
-import CustomerDashboard from './pages/CustomerDashboard';
+import Login from './pages/signup/Login';
 import SignUp from './pages/signup/Register';
 import SuccessfulSignUp from './pages/signup/successfulSignUp';
+import CustomerDashboard from './pages/CustomerDashboard';
+import Dashboard from './pages/Dashboard';
 import Order from './pages/Order';
 import Capture from './pages/paypal/Capture';
 import ConfirmPayment from './pages/paypal/ConfirmPayment';
@@ -37,8 +37,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<h1>Home Page</h1>} />  {/* Default route for home */}
         <Route path="/login" element={<Login />} />
-        <Route path="/hello" element={<Hello />} />
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/order" element={<Order />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/successful-signup" element={<SuccessfulSignUp />} />

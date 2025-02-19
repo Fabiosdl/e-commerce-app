@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import api from '../api';
-
+import api from '../../api';
 import { useNavigate } from 'react-router-dom'; // For redirection after successful login
+import './Login.css';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     const credentials = {
       username : username,
@@ -28,8 +31,7 @@ const LoginPage = () => {
       
       if (expiration && Date.now() > parseInt(expiration)) {
         console.warn("Token expired. Logging out...");
-        localStorage.removeItem('token');
-        localStorage.removeItem('tokenExpiration');
+        localStorage.clear();
       }
 
       const response = await api.post('/api/auth/login',credentials);
@@ -63,40 +65,59 @@ const LoginPage = () => {
       } else {
         setErrorMessage('An error occurred while trying to log you in.');
       }
+    } finally {
+      setLoading(false); // Stop loading state
     }
   };
   
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+    <div className="page-container">
 
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <div className='login-container'>
+          <h2>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="email"></label>
+              <input
+                type="email"
+                id="username"
+                placeholder='Email'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
 
-        <button type="submit">Login</button>
-      </form>
+            <div className="form-group">
+              <label htmlFor="password"></label>
+              <input
+                type="password"
+                id="password"
+                placeholder='Password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+            <div className="form-actions">
+
+              <button type="submit" disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
+
+              <button type="button" className="signup-btn" onClick={() => navigate('/signup')}>
+                Sign Up
+              </button>
+
+            </div>
+            
+        </form>
+      </div>
     </div>
   );
 };
