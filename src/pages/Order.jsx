@@ -8,16 +8,31 @@ const Order = () => {
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [basketId, setBasketId] = useState(null);
 
 
     const userId = Number(localStorage.getItem('userId'));
+
+    const fetchActiveBasket = async () => {
+        try {
+          const response = await api.get(`/user/${userId}/basket/active-basket`);
+          if (response.data) setBasketId(response.data.id);
+        } catch (err) {
+          console.error("Error fetching active basket", err);
+        }
+    };
+
+    useEffect(() => {
+        fetchActiveBasket(); //fetch basket and set basket id as soon the page loads
+        //or the user changes.
+    },[userId])
 
     useEffect(() => {
 
         const fetchOrder = async () => {
 
             try {
-                const response = await api.get(`/user/${userId}/order/pending-order`);
+                const response = await api.get(`/user/${userId}/order/newest-created-order`);
                 if (response.data && response.data.items) {
                     const { id, items, totalPrice } = response.data;
     
@@ -46,29 +61,47 @@ const Order = () => {
 
     const handlePayment = async () => {
         try {
-
+            // First, check out the basket
+            const checkoutResponse = await api.patch(`/user/${userId}/basket/${basketId}/checkout`);
+    
+            if (!checkoutResponse || (checkoutResponse.status !== 200 && checkoutResponse.status !== 204)) {
+                console.error("Basket could not be checked out");
+                setError("Basket checkout failed. Please try again.");
+                return; // Ensure we stop execution
+            }
+    
+        } catch (err) {
+            console.error("Payment failed. Could not check out basket", err);
+            setError("Payment failed. Could not check out basket");
+            return; // Stop execution if checkout fails
+        }
+    
+        try {
             const orderIdParam = Number(entityOrderId);
-            const response = await api.post(`/user/${userId}/order/${orderIdParam}/payments/create`);
-            
-            if (!response || !response.data) {
+            const paymentResponse = await api.post(`/user/${userId}/order/${orderIdParam}/payments/create`);
+    
+            if (!paymentResponse || !paymentResponse.data) {
                 console.error("Payment response is empty");
+                setError("Payment failed. No payment data received.");
                 return;
             }
-
-            const approvalUrl = response.data;
-
+    
+            const approvalUrl = paymentResponse.data;
             console.log("Approval URL:", approvalUrl);
+    
             if (approvalUrl && approvalUrl.startsWith("https")) {
-                window.location.href = approvalUrl;
+                window.location.href = approvalUrl; // Redirect to PayPal
             } else {
                 console.error("Invalid PayPal approval URL:", approvalUrl);
+                setError("Invalid PayPal approval URL");
             }
-
+    
         } catch (err) {
             console.error("Payment failed:", err);
             setError("Payment failed");
         }
     };
+    
     
     if (loading) return <div className="spinner">Loading...</div>;
 

@@ -3,12 +3,11 @@ import React, {useEffect} from 'react';
 import Login from './pages/signup/Login';
 import SignUp from './pages/signup/Register';
 import SuccessfulSignUp from './pages/signup/successfulSignUp';
-import CustomerDashboard from './pages/CustomerDashboard';
 import Dashboard from './pages/Dashboard';
 import Order from './pages/Order';
 import Capture from './pages/paypal/Capture';
-import ConfirmPayment from './pages/paypal/ConfirmPayment';
 import SuccessfulPayment from './pages/paypal/SuccessfulPayment';
+import Cancel from './pages/paypal/Cancel';
 
 const App = () => {
 
@@ -37,14 +36,13 @@ const App = () => {
       <Routes>
         <Route path="/" element={<h1>Home Page</h1>} />  {/* Default route for home */}
         <Route path="/login" element={<Login />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/order" element={<Order />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/successful-signup" element={<SuccessfulSignUp />} />
         <Route path="/capture" element={<Capture />} />
-        <Route path="/confirm-payment" element={<ConfirmPayment />} />        
         <Route path="/successful-payment" element={<SuccessfulPayment />} />
+        <Route path="/cancel" element={<Cancel />} />
       </Routes>
     </>
   );

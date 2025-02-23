@@ -14,7 +14,7 @@ const Capture = () => {
         if (tokenFromUrl && payerIdFromUrl) {
             localStorage.setItem('paypalToken',tokenFromUrl);
             localStorage.setItem('paypalPayerId',payerIdFromUrl);
-            navigate('/confirm-payment')
+            navigate('/successful-payment')
 
         } else {
             console.error("Missing token or PayerID in the URL");

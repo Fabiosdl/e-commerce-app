@@ -8,8 +8,8 @@ const SuccessfulPayment = () => {
   useEffect(() => {
     // You can add a short delay if you want to display the success message for a while
     setTimeout(() => {
-      navigate("/customer-dashboard");
-    }, 3000); // Redirects after 3 seconds
+      navigate("/dashboard");
+    }, 5000); // Redirects after 3 seconds
   }, [navigate]);
 
   return (

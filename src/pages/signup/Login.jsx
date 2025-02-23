@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../api';
 import { useNavigate } from 'react-router-dom'; // For redirection after successful login
-import './Login.css';
+import styles from './Login.module.css';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -54,7 +54,7 @@ const LoginPage = () => {
 
       // Redirect based on role
       if (role === 'ROLE_CUSTOMER') {
-        navigate('/customer-dashboard');
+        navigate('/dashboard');
       } else {
         navigate('/admin-dashboard');
       }
@@ -73,12 +73,12 @@ const LoginPage = () => {
 
   return (
 
-    <div className="page-container">
+    <div className={styles["page-container"]}>
 
-      <div className='login-container'>
+      <div className={styles['login-container']}>
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className={styles["form-group"]}>
               <label htmlFor="email"></label>
               <input
                 type="email"
@@ -90,7 +90,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className={styles["form-group"]}>
               <label htmlFor="password"></label>
               <input
                 type="password"
@@ -102,15 +102,15 @@ const LoginPage = () => {
               />
             </div>
 
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {errorMessage && <div className={styles["error-message"]}>{errorMessage}</div>}
 
-            <div className="form-actions">
+            <div className={styles["form-actions"]}>
 
               <button type="submit" disabled={loading}>
                 {loading ? 'Logging in...' : 'Login'}
               </button>
 
-              <button type="button" className="signup-btn" onClick={() => navigate('/signup')}>
+              <button type="button" className={styles["signup-btn"]} onClick={() => navigate('/signup')}>
                 Sign Up
               </button>
 

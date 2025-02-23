@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // for redirection after successful registration
-import './Register.css';
+import { useNavigate } from 'react-router-dom';
+import styles from './Register.module.css';
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -25,8 +25,9 @@ const SignUpPage = () => {
             password: password
         };
 
-        try {
+        setLoading(true); // Start loading
 
+        try {
             const response = await fetch('http://localhost:8080/api/auth/signup', {
                 method: 'POST',
                 headers: {
@@ -34,74 +35,92 @@ const SignUpPage = () => {
                 },
                 body: JSON.stringify(userInputs)    
             });
-
+        
             if (response.ok) {
-                // Redirect to login page
-                navigate('/successful-signUp');
+                navigate('/successful-signUp');  // Redirect to success page
             } else {
-                const data = await response.json();
-                setErrorMessage(data.message || 'Invalid sign up inputs');
-
+                const data = await response.json(); // Parse JSON error response
+                setErrorMessage(data.description || data.detail || 'Invalid sign up inputs');
             }
         } catch (error) {
-            setErrorMessage('An error occurred while trying to sign you in. Please try again');
+            setErrorMessage("Network error. Please try again.");
+        } finally {
+            setLoading(false); // Stop loading spinner or button
         }
+        
     };
 
     return (
-        <div className="signup-container">
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSubmit}>
+        <div className={styles["page-container"]}>
+        <div className={styles["signup-container"]}>
+            <h2>Sign Up</h2>
+            <form onSubmit={handleSubmit}>
+                <div className={styles["form-group"]}>
+                    <label htmlFor="name"></label>
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder='Full Name'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                </div>
 
-        <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-            />
+                <div className={styles["form-group"]}>
+                    <label htmlFor="email"></label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder='Email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Please enter a valid email address"
+                    />
+                </div>
+
+                <div className={styles["form-group"]}>
+                    <label htmlFor="password"></label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder='Password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        minLength="8"
+                        pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+                        title="Password must have at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character."
+                    />
+                </div>
+
+                <div className={styles["form-group"]}>
+                    <label htmlFor="confirmPassword"></label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder='Confirm Password'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </div>
+
+                {errorMessage && <div className={styles["error-message"]}>{errorMessage}</div>}
+                <div className={styles.button} >
+                    <button className={styles.signup} type="submit" disabled={loading}>
+                        {loading ? 'Signing Up...' : 'Sign Up'}
+                    </button>
+
+                    <button className={styles.login} type='button' onClick={() => navigate('/login')}> 
+                        Login
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
         </div>
-
-        <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-        </div>
-        <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-            />
-        </div>
-
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-        <button type="submit">SignUp</button>
-        </form>
-    </div>
-
     );
 };
 
