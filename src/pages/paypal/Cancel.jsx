@@ -11,28 +11,36 @@ const CancelOrder = () => {
     const navigate = useNavigate();
 
     const cancelOrder = async () => {
+
+        console.log("function cancel order is being called");
+        if(orderId === 0){
+            console.error("Order Id cannot be 0");
+            setError("Order Id cannot be 0");
+            return;  
+        }
+
         try {
             const response = await api.delete(`user/${userId}/order/${orderId}/cancel`);
-            if (response.status !== 200 && response.status !== 204) {
+            if (response.status === 200) {
+                console.log("Order successfully cancelled");
+            } else {
                 console.error("Could not cancel order");
                 setError("Failed to cancel order. Please try again.");
             }
-        } catch (error) {
-            console.error("Error trying to cancel order:", error);
+        } catch (err) {
+            console.error("Error trying to cancel order:", err);
             setError("Error trying to cancel order");
         }
     };
 
     useEffect(() => {
-        const cancelAndRedirect = async () => {
-            await cancelOrder();
-            setTimeout(() => {
-                navigate("/dashboard");
-            }, 5000);
-        };
+        cancelOrder(); 
 
-        cancelAndRedirect();
-    }, [navigate]);
+
+        setTimeout(() => {
+            navigate("/dashboard");
+        }, 5000);
+    }, []);
 
     return (
         <div style={{ textAlign: "center", padding: "20px" }}>

@@ -1,4 +1,5 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import {Routes, Route, useNavigate } from 'react-router-dom';
+import ProtectedRoute from "./ProtectedRoute";
 import React, {useEffect} from 'react';
 import Login from './pages/signup/Login';
 import SignUp from './pages/signup/Register';
@@ -10,7 +11,6 @@ import SuccessfulPayment from './pages/paypal/SuccessfulPayment';
 import Cancel from './pages/paypal/Cancel';
 
 const App = () => {
-
   
   const navigate = useNavigate();
   
@@ -34,15 +34,15 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<h1>Home Page</h1>} />  {/* Default route for home */}
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/order" element={<Order />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/successful-signup" element={<SuccessfulSignUp />} />
-        <Route path="/capture" element={<Capture />} />
-        <Route path="/successful-payment" element={<SuccessfulPayment />} />
-        <Route path="/cancel" element={<Cancel />} />
+        <Route path="/" element={<h1>Home Page</h1>} />  {/* Default route for home */}
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/order" element={<ProtectedRoute><Order /></ProtectedRoute>} />        
+        <Route path="/capture" element={<ProtectedRoute><Capture /></ProtectedRoute>} />
+        <Route path="/successful-payment" element={<ProtectedRoute><SuccessfulPayment /></ProtectedRoute>} />
+        <Route path="/cancel" element={<ProtectedRoute><Cancel /></ProtectedRoute>} />
       </Routes>
     </>
   );

@@ -39,6 +39,19 @@ html, body {
   margin-left: 30px;
   color: white;
 }
+
+.logbutton{
+  background-color:hsl(25, 80%, 55%);
+  width: 40px;
+  margin-right: 50px;
+  padding: 0;
+}
+.logout{
+  width: 100%;
+  height: auto;
+  background-color: hsl(25, 80%, 55%);
+}
+
 .basket-info{
   margin-right: 50px;
 }
@@ -56,19 +69,22 @@ html, body {
 }
 
 .middle-container{
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;    
   background-color: hsl(30, 50%, 95%);
+  margin: 0 20px 0 70px;
 }
 
 .products-container {
   display: grid;
-  grid-template-rows: 60px auto auto auto;
-  grid-template-columns: 250px 250px 250px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
   gap: 15px;
   margin-right: 15px;
   border-radius: 20px;
+  flex-grow: 1; /* Makes it take up only available space */
+  max-width: calc(100% - 400px); /* Reserves space for the cart */
 }
 
 .product img{
@@ -79,16 +95,13 @@ html, body {
 }
 
 .category{
+  grid-column: 1 / -1; /* Makes it span the entire width of the grid */
   font-size: 1.5rem;    
   font-weight: 700;
-  grid-column: span 3;
-  grid-row: span 1;
   margin-bottom: -10px;
 }
 
 .product{
-  grid-row: span 1;
-  grid-column: span 1;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -141,8 +154,8 @@ html, body {
 
 .btn::before {
   content: '';
-  width: 20px; /* Icon width */
-  height: 20px; /* Icon height */
+  width: 20px;
+  height: 20px;
   background: url('/images/icon-add-to-cart.svg') no-repeat center;
 }
 
@@ -198,13 +211,14 @@ html, body {
 }
 
 .cart-container{
+  width: 350px;
+  min-width: 350px;
+  height: auto;
   display: flex;
   flex-direction: column;
   background-color: hsl(20, 50%, 98%);
-  min-width: 300px;
-  height: auto;
   border-radius: 10px;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
 }
 
 .empty-cart {
@@ -235,10 +249,10 @@ svg {
 }
 
 .miniature {
-  width: 75px;  /* Set a fixed width */
-  height: 75px; /* Set a fixed height */
+  width: 75px; 
+  height: 75px;
   object-fit: cover; /* Ensures the image fills the box without distortion */
-  border-radius: 8px; /* Optional: Makes corners rounded */  
+  border-radius: 8px;   
   margin-right: 10px;
 }
 

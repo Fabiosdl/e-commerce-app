@@ -10,7 +10,6 @@ const Order = () => {
     const [error, setError] = useState(null);
     const [basketId, setBasketId] = useState(null);
 
-
     const userId = Number(localStorage.getItem('userId'));
 
     const fetchActiveBasket = async () => {
@@ -23,8 +22,10 @@ const Order = () => {
     };
 
     useEffect(() => {
+
         fetchActiveBasket(); //fetch basket and set basket id as soon the page loads
         //or the user changes.
+
     },[userId])
 
     useEffect(() => {
@@ -42,6 +43,7 @@ const Order = () => {
                     setOrderItems(items);
                     setTotalPrice(totalPrice);
 
+                    console.log(`Id of fetched order: ${entityOrderId}`)
                     localStorage.setItem('entityOrderId', entityOrderId);
 
                 } else {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-
+import useLogout from "./signup/useLogout";
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
@@ -15,17 +15,19 @@ const Dashboard = () => {
   const [basketItemsCount, setBasketItemsCount] = useState(0);
   const [basketId, setBasketId] = useState(null);
   const [basketItems, setBasketItems] = useState({}); // Stores productId -> { itemId, quantity, product.name, product.img, product.price }
-
-
+  const [totalPrice, setTotalPrice] = useState(0)
 
   const userId = Number(localStorage.getItem("userId"));
   const navigate = useNavigate();
+  const logout = useLogout();
   
   // function to retrieve the newest active basket
   const fetchActiveBasket = async () => {
     try {
       const response = await api.get(`/user/${userId}/basket/active-basket`);
-      if (response.data) setBasketId(response.data.id);
+      if (response.data) {
+        setBasketId(response.data.id);
+      }
     } catch (err) {
       console.error("Error fetching active basket", err);
     }
@@ -79,6 +81,15 @@ const Dashboard = () => {
     }
   };
 
+  const fetchBasketTotalPrice = async () => {
+    try {
+      const response = await api.get(`/user/${userId}/basket/${basketId}/total-price`);
+      setTotalPrice(response.data);
+    } catch (err) {
+      console.error("Error fetching total price:", err);
+    }
+  };
+
   const fetchItemsInBasket = async () => {
     try {
       const response = await api.get(`/basket/${basketId}/item`);
@@ -111,6 +122,7 @@ const Dashboard = () => {
 
     fetchBasketItemCount();
     fetchItemsInBasket();
+    fetchBasketTotalPrice();
   }, [basketId]);
 
 
@@ -125,8 +137,10 @@ const Dashboard = () => {
       await api.post(`/basket/${basketId}/item?productId=${productId}&quant=1`);
 
       setBasketItemsCount((prevCount) => prevCount + 1);
+      setTotalPrice((prevCount) => prevCount + (product.productPrice));
         
       await fetchItemsInBasket();   
+      await fetchBasketTotalPrice();
 
     } catch (err) {
       console.error("Error adding product:", err);  
@@ -146,6 +160,7 @@ const incrementProductQuantity = async (product) => {
   }));
 
   setBasketItemsCount((prevCount) => prevCount + 1);
+  setTotalPrice((prevCount) => prevCount + (product.productPrice));
 
   try {
 
@@ -179,6 +194,8 @@ const decrementProductQuantity = async (product) => {
   
 
   setBasketItemsCount((prevCount) => Math.max(prevCount - 1, 0));// Prevent negative count
+  
+  setTotalPrice((prevCount) => Math.max(prevCount - (product.productPrice), 0));
 
   try {
       await api.post(`/basket/${basketId}/item/${item.itemId}/decrement`);
@@ -214,6 +231,9 @@ const handleCheckout = async () => {
     <div className={styles["page-container"]}>
       <header className={styles["dashboard-header"]}>
           <h2>Welcome, {customer}!</h2>
+          <button className={styles.logbutton} onClick={logout}>
+            <img className={styles.logbutton} src="/images/logout.png" alt="logout button" />
+          </button>
       </header>
       <div className={styles["middle-container"]}>    
         <div className={styles["products-container"]}>
@@ -281,7 +301,8 @@ const handleCheckout = async () => {
                   </div>               
                 </div>
               ))}          
-              <hr/>    
+              <hr/>
+              <span>Total = € {totalPrice.toFixed(2)}</span>    
               <div className={styles["check-container"]}>
                   <button className={styles.checkout} onClick={handleCheckout}>Check Out</button>
               </div>
