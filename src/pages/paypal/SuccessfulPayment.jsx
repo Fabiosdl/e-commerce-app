@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 const SuccessfulPayment = () => {
   const navigate = useNavigate();
 
-  // Redirect the user to the customer dashboard after a short delay
+  // Redirect the user to the customer dashboard after a 4 sec delay
   useEffect(() => {
-    // You can add a short delay if you want to display the success message for a while
+    
     setTimeout(() => {
       navigate("/dashboard");
-    }, 5000); // Redirects after 3 seconds
+    }, 4000);
   }, [navigate]);
 
   return (
@@ -17,7 +17,7 @@ const SuccessfulPayment = () => {
       <h2>Payment Successful!</h2>
       <p>Your payment has been processed successfully. You will be redirected to your dashboard shortly.</p>
       <p>Thank you for your purchase!</p>
-      {/* Optional: Display an image or animation here */}
+
     </div>
   );
 };
