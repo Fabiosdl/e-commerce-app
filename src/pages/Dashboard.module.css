@@ -299,3 +299,23 @@ hr {
   background-color: hsl(25, 85%, 30%);
   margin-top: 30px;
 }
+
+/* set up for screen size under 680px */
+
+@media screen and (max-width: 680px) {
+  .middle-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .products-container {
+    max-width: 100%; /* Allow it to take full width */
+    margin-right: 0;
+  }
+
+  .cart-container {
+    width: 100%; /* Make it take full width */
+    min-width: auto;
+    margin-top: 20px; /* Add some spacing */
+  }
+}

@@ -25,10 +25,10 @@ const SignUpPage = () => {
             password: password
         };
 
-        setLoading(true); // Start loading
-
+        setLoading(true);
+        
         try {
-            const response = await fetch('http://localhost:8080/api/auth/signup', {
+            const response = await fetch('https://app.fslwebsolutions.com/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

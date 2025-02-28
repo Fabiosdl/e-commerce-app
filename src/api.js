@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://fl-ecommerce-api-demo-env.eba-6xi5pz7m.us-east-1.elasticbeanstalk.com",
+  baseURL: "https://app.fslwebsolutions.com",
   //withCredentials: true, // Send cookies with requests
   headers:{
     'Content-Type':'application/json',
