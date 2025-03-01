@@ -294,7 +294,7 @@ const handleCheckout = async () => {
             <>
               {Object.entries(basketItems).map(([productId, item]) => (
                 <div key={item.itemId} className={styles["cart-item"]}>
-                  <img className={styles.miniature} src={`/${item.imgSource}` || "placeholder.jpg"} alt={`${item.header} photo`} />
+                  <img className={styles.miniature} src={item.imgSource || "placeholder.jpg"} alt={`${item.header} photo`} />
                   <div className={styles["item-content"]}>
                     <span className={styles["item-header"]}> {item.header} </span>
                     <span>{item.quantity} un @ {item.price} =  € {(item.quantity * item.price).toFixed(2)}</span>
