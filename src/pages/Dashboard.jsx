@@ -245,7 +245,7 @@ const handleCheckout = async () => {
           ) : (
             products.map((product) => (
               <div className={styles.product} key={product.id}>
-                <img src={`${product.imageSrc}` || "placeholder.jpg"} alt={`${product.productName} photo`} />
+                <img src={product.imageSrc || "placeholder.jpg"} alt={`${product.productName} photo`} />
 
                 <span className={styles.resume}>{product.productName}</span>
                 <span className={styles.description}>{product.productDescription} </span>
