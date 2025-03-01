@@ -39,7 +39,7 @@ const CancelOrder = () => {
 
         setTimeout(() => {
             navigate("/dashboard");
-        }, 5000);
+        }, 4000);
     }, []);
 
     return (
