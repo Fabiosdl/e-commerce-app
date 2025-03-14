@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [basketItems, setBasketItems] = useState({}); // Stores productId -> { itemId, quantity, product.name, product.img, product.price }
   const [totalPrice, setTotalPrice] = useState(0)
 
-  const userId = Number(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const logout = useLogout();
   
@@ -94,8 +94,6 @@ const Dashboard = () => {
     try {
       const response = await api.get(`/basket/${basketId}/item`);
       const items = response.data;
-  
-      console.log("Items from fetchItemsInBasket:", items);
   
       // Create a new basket state in one go
       const updatedBasket = items.reduce((acc, item) => {

@@ -48,10 +48,6 @@ const LoginPage = () => {
       localStorage.setItem('userId', userId);
       localStorage.setItem('role', role);
 
-      console.log(`Token sent by the server: ${token}`);
-      console.log(`User Id sent by the server: ${userId}`);
-      console.log(`User Role sent by the server: ${role}`);
-
       // Redirect based on role
       if (role === 'ROLE_CUSTOMER') {
         navigate('/dashboard');

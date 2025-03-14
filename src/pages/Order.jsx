@@ -10,7 +10,7 @@ const Order = () => {
     const [error, setError] = useState(null);
     const [basketId, setBasketId] = useState(null);
 
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = localStorage.getItem('userId');
 
     const fetchActiveBasket = async () => {
         try {
@@ -43,7 +43,6 @@ const Order = () => {
                     setOrderItems(items);
                     setTotalPrice(totalPrice);
 
-                    console.log(`Id of fetched order: ${entityOrderId}`)
                     localStorage.setItem('entityOrderId', entityOrderId);
 
                 } else {
@@ -89,7 +88,6 @@ const Order = () => {
             }
     
             const approvalUrl = paymentResponse.data;
-            console.log("Approval URL:", approvalUrl);
     
             if (approvalUrl && approvalUrl.startsWith("https")) {
                 window.location.href = approvalUrl; // Redirect to PayPal

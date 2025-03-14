@@ -16,7 +16,6 @@ api.interceptors.request.use((config) => {
 
   if(token) {
     config.headers["Authorization"] = `Bearer ${token}`;
-    console.log('The credentials are being sent to server');
   } else {
     console.warn("⚠️ No credentials are being sent");
   }

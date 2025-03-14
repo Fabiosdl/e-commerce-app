@@ -5,14 +5,13 @@ import api from "../../api";
 const CancelOrder = () => {
     const [error, setError] = useState(null);
 
-    const userId = Number(localStorage.getItem('userId')) || 0;
-    const orderId = Number(localStorage.getItem('entityOrderId')) || 0;
+    const userId = localStorage.getItem('userId') || 0;
+    const orderId = localStorage.getItem('entityOrderId') || 0;
 
     const navigate = useNavigate();
 
     const cancelOrder = async () => {
 
-        console.log("function cancel order is being called");
         if(orderId === 0){
             console.error("Order Id cannot be 0");
             setError("Order Id cannot be 0");

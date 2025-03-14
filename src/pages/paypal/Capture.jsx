@@ -4,8 +4,8 @@ import api from "../../api";
 
 const Capture = () => {
 
-    const userId = Number(localStorage.getItem('userId'));
-    const orderId = Number(localStorage.getItem('entityOrderId'));
+    const userId = localStorage.getItem('userId');
+    const orderId = localStorage.getItem('entityOrderId');
     const navigate = useNavigate();
 
     // First Extract token from the URL
@@ -19,7 +19,6 @@ const Capture = () => {
                 params: { token: tokenFromUrl }
             })
             .then(response => {
-                console.log("Order captured successfully:", response.data);
                 navigate('/successful-payment');
             })
             .catch(error => {
