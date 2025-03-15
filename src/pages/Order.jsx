@@ -78,8 +78,8 @@ const Order = () => {
         }
     
         try {
-            const orderIdParam = Number(entityOrderId);
-            const paymentResponse = await api.post(`/user/${userId}/order/${orderIdParam}/payments/create`);
+            
+            const paymentResponse = await api.post(`/user/${userId}/order/${entityOrderId}/payments/create`);
     
             if (!paymentResponse || !paymentResponse.data) {
                 console.error("Payment response is empty");
