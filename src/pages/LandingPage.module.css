@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+.App-container{
+  height: 100vh;
+  display: flex;
+  background-image: url(/public/images/bg-intro-desktop.png);
+  background-color: hsl(36, 100%, 74%);
+  overflow-y: auto;
+}
+
+.left-container, .right-container {
+  flex:1; /*to divide 50% of the screen*/
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+
+.left-container text {
+  font-size: 43px;
+  font-weight: 650;
+  line-height: 1.2;
+  margin-left: 140px;
+  margin-bottom: -4px;
+}
+
+.left-container h5 {
+  font-size: 14px;
+  font-weight: 100;
+  margin-left: 140px;
+  margin-right: 60px;
+}
+
+/*--------------- Right Column ---------------*/
+
+.subscription-button, .form-container {
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.15); /*(shadow color, black with 15% opacity)*/
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  margin-right: 140px;
+}
+
+.subscription-button {  
+  background-color:hsl(248, 32%, 49%);  
+  min-height: 55px;
+  color: white;
+  font-size: 14px;
+  font-weight: 100;
+  margin-top: 60px;
+}
+
+.form-container {
+  background-color: white;
+  border-radius: 8px;
+  height: auto;
+  max-height: 100%;
+  padding-top: 10px;
+}
+
+.input-field {
+  height: 50px;  
+  width: 410px;
+  border: 0.5px solid gray;
+  border-radius: 8px;
+  margin-top: 15px;
+  padding-left: 10px;
+}
+
+.input-field.errors {
+  height: 50px;
+  width: 410px;
+  border: 1.5px solid hsl(0, 100%, 74%) ;
+  border-radius: 8px;
+  margin-top: 15px;
+  padding-left: 10px;
+}
+
+button {          
+  height: 50px;
+  width: 425px;  
+  border: none;
+  border-radius: 8px;
+  background-color: hsl(154, 59%, 51%);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 3px 0 hsl(153, 56%, 35%);
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.input-field::placeholder{
+  color: gray;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.input-field.errors::placeholder{
+  color: hsl(0, 100%, 74%) ;
+  padding-left: 20px;
+  font-weight: bold;
+}
+
+.form-container p{
+  color: hsl(246, 25%, 77%);
+  font-size: 10px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-container a{
+  color: hsl(0, 100%, 74%) ;
+  font-size: 10px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.error-message {
+  display: flex;
+  justify-content: right;
+  align-items: end;
+  color: hsl(0, 100%, 74%) ;
+  font-size: 10px;
+  font-style: italic;
+}
+
+.error-icon {
+  margin-left: -35px;
+  transform: translateY(35%);
+}
+
+/* ----------  Mobile Style --------------*/
+
+@media (max-width: 750px) {
+  .App-container {
+    flex-direction: column; /* Stack containers vertically */
+    background-image: url(/public/images/bg-intro-mobile.png);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .left-container, .right-container {
+    width: 100%;
+    height: auto;
+    flex: 0;
+    text-align: center;
+  }
+
+  /* Adjust text and form sizes for smaller screens */
+  .left-container text {
+    margin-top: 40px;
+    width: 80%;
+    max-width: 350px;
+    font-size: 30px;
+    margin-left: 0;    
+    margin-bottom: 25px;
+  }
+
+  .left-container h5 {
+    width: 80%;
+    max-width: 350px;
+    margin: 0 auto;
+    font-size: 12px;
+    margin-bottom: 25px;
+  }
+
+  .subscription-button, .form-container {
+    width: 80%; /* Full width on small screens */
+    max-width: 350px; /* Prevents the form from becoming too wide */
+    margin: 0 auto; /* Center horizontally */
+    margin-bottom: 25px;
+  }
+  
+  .subscription-button{
+    min-height: 100px;
+    border-radius: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px; /* Add some internal padding */
+    box-sizing: border-box; /* Ensure padding is counted inside the width */
+    height: auto; /*in the desktop version the height is fixed in 650px. I used auto so it can set the proper height properly*/
+    max-height: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .input-field {
+    width: 100%; 
+    max-width: 100%; /* Prevent the input from exceeding form width */
+    box-sizing: border-box; /* Include padding and borders inside the width */
+  }
+
+  .input-field.errors{
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .form-container p{
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-container a{
+    color: hsl(0, 100%, 74%);
+    font-size: 10px;
+    text-decoration: none;
+    margin-left: 5px; /* Add some space between the <p> text and <a> */
+  }
+}

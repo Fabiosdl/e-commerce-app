@@ -88,6 +88,7 @@ const SignUpPage = () => {
                         placeholder='Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autocomplete="new-password"
                         required
                         minLength="8"
                         pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
@@ -102,6 +103,7 @@ const SignUpPage = () => {
                         id="confirmPassword"
                         placeholder='Confirm Password'
                         value={confirmPassword}
+                        autocomplete="new-password"
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />

@@ -1,6 +1,7 @@
 import {Routes, Route, useNavigate } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import React, {useEffect} from 'react';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/signup/Login';
 import SignUp from './pages/signup/Register';
 import SuccessfulSignUp from './pages/signup/successfulSignUp';
@@ -34,6 +35,7 @@ const App = () => {
   return (
     <>
       <Routes>
+        <Route path="/landing-page" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/successful-signup" element={<SuccessfulSignUp />} />
